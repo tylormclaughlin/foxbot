@@ -65,13 +65,14 @@ namespace fox_bot
         private async Task HandleCommandAsync(SocketMessage arg)
         {
             var message = arg as SocketUserMessage;
-            var context = new SocketCommandContext(_client, message);
+            
 
             if (message is null || message.Author.IsBot)
             {
                 return;
             }
 
+            var context = new SocketCommandContext(_client, message);
             int argPos = 0;
 
             //Handle messages containing commands, which are prefixed with !
