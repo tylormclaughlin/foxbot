@@ -16,6 +16,7 @@ namespace foxbot.Modules
         [RequireBotPermission(Discord.ChannelPermission.ManageMessages)]
         public async Task purgeAsync()
         {
+            //Note for later, try adding messges to new list and then calling DeleteMessagesAsync.
             var messages = await Context.Channel.GetMessagesAsync().Flatten();
             foreach (var msg in messages)
             {
@@ -37,6 +38,8 @@ namespace foxbot.Modules
                     await Context.Channel.SendMessageAsync(ex.Message);
                 }
             }
+
+
         }
     }
 }
