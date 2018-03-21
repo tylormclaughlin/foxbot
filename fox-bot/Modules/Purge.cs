@@ -16,28 +16,32 @@ namespace foxbot.Modules
         [RequireBotPermission(Discord.ChannelPermission.ManageMessages)]
         public async Task purgeAsync()
         {
-            //Note for later, try adding messges to new list and then calling DeleteMessagesAsync.
+            //Dramatically more effective implementation. Add error handling.
             var messages = await Context.Channel.GetMessagesAsync().Flatten();
-            foreach (var msg in messages)
-            {
-                try
-                {
-                    //Don't attempt to delete pinned messages.
-                    if (msg.IsPinned)
-                    {
-                        continue;
-                    }
-                    else
-                    {
-                        await msg.DeleteAsync();
-                    }
-                }
-                //If a message can't be deleted for some reason, send the reason back.
-                catch(Exception ex)
-                {
-                    await Context.Channel.SendMessageAsync(ex.Message);
-                }
-            }
+            var messagesToDelete = messages.Where(msg => !msg.IsPinned);
+
+            await Context.Channel.DeleteMessagesAsync(messagesToDelete);
+
+            //foreach (var msg in messages)
+            //{
+            //    try
+            //    {
+            //        //Don't attempt to delete pinned messages.
+            //        if (msg.IsPinned)
+            //        {
+            //            continue;
+            //        }
+            //        else
+            //        {
+            //            await msg.DeleteAsync();
+            //        }
+            //    }
+            //    //If a message can't be deleted for some reason, send the reason back.
+            //    catch(Exception ex)
+            //    {
+            //        await Context.Channel.SendMessageAsync(ex.Message);
+            //    }
+            //}
 
 
         }
