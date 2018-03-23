@@ -14,10 +14,10 @@ namespace foxbot.Modules
         [Summary("Clears the channel of all messages.")]
         [RequireUserPermission(Discord.GuildPermission.ManageMessages)]
         [RequireBotPermission(Discord.ChannelPermission.ManageMessages)]
-        public async Task purgeAsync()
+        public async Task purgeAsync(int numberToDelete = 500)
         {
             //Dramatically more effective implementation. Add error handling.
-            var messages = await Context.Channel.GetMessagesAsync().Flatten();
+            var messages = await Context.Channel.GetMessagesAsync(numberToDelete).Flatten();
             var messagesToDelete = messages.Where(msg => !msg.IsPinned);
 
             await Context.Channel.DeleteMessagesAsync(messagesToDelete);
