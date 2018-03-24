@@ -11,10 +11,10 @@ namespace foxbot.Modules
     public class Purge : ModuleBase<SocketCommandContext>
     {
         [Command("purge")]
-        [Summary("Clears the channel of all messages.")]
+        [Summary("Clears the channel of unpinned messages.")]
         [RequireUserPermission(Discord.GuildPermission.ManageMessages)]
         [RequireBotPermission(Discord.ChannelPermission.ManageMessages)]
-        public async Task purgeAsync(int numberToDelete = 500)
+        public async Task PurgeAsync(int numberToDelete = 1000)
         {
             //Dramatically more effective implementation. Add error handling.
             var messages = await Context.Channel.GetMessagesAsync(numberToDelete).Flatten();

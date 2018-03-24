@@ -12,6 +12,7 @@ namespace foxbot.Modules
     public class Apk : ModuleBase<SocketCommandContext>
     {
         [Command("apk")]
+        [Summary("This command provides a direct link to Pokemon Go APK Mirror downloads.")]
         public async Task DefaultApkAsync(string versionNumber = "")
         {
             var feed = FeedReader.Read("https://www.apkmirror.com/apk/niantic-inc/pokemon-go/feed/").Items;
