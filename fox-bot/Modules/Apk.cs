@@ -13,7 +13,7 @@ namespace foxbot.Modules
     {
         [Command("apk")]
         [Summary("This command provides a direct link to Pokemon Go APK Mirror downloads.")]
-        public async Task DefaultApkAsync(string versionNumber = "")
+        public async Task DefaultApkAsync([Summary("Optional version number to search for.")] string versionNumber = "")
         {
             var feed = FeedReader.Read("https://www.apkmirror.com/apk/niantic-inc/pokemon-go/feed/").Items;
             bool validVersion = false;

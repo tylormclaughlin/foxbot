@@ -14,7 +14,7 @@ namespace foxbot.Modules
         [Summary("Clears the channel of unpinned messages.")]
         [RequireUserPermission(Discord.GuildPermission.ManageMessages)]
         [RequireBotPermission(Discord.ChannelPermission.ManageMessages)]
-        public async Task PurgeAsync(int numberToDelete = 1000)
+        public async Task PurgeAsync([Summary("Number of messages to delete. Default = 1000")] int numberToDelete = 1000)
         {
             //Dramatically more effective implementation. Add error handling.
             var messages = await Context.Channel.GetMessagesAsync(numberToDelete).Flatten();
