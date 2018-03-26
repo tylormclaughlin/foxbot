@@ -1,6 +1,7 @@
 ﻿using Discord.Commands;
 using System;
 using System.Collections.Generic;
+using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -20,7 +21,15 @@ namespace foxbot.Modules
         [RequireUserPermission(Discord.GuildPermission.Administrator, Group = "Allowed")]
         public async Task AddCommandAsync(string cmdName, [Remainder]string cmdContent)
         {
-            await ReplyAsync($"Created command !{cmdName} - {cmdContent}");
+            await ReplyAsync($"Created command !{cmdName}");
+
+            ModuleInfo module = await _commandService.CreateModuleAsync("", m =>
+            {
+                m.AddCommand(cmdName, async (ctx, _, provider, _1) =>
+                {
+                    await ReplyAsync(cmdContent);
+                }, command => { });
+            });
         }
 
     }
