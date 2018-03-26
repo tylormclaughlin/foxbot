@@ -11,8 +11,9 @@ namespace foxbot.Modules
     public class Commands : ModuleBase<SocketCommandContext>
     {
         private readonly CommandService _commandService;
+        private readonly IServiceProvider _serviceProvider;
 
-        public Commands(CommandService commands)
+        public Commands(CommandService commands, IServiceProvider service)
         {
             _commandService = commands;
         }
@@ -27,16 +28,21 @@ namespace foxbot.Modules
             {
                 foreach (var command in commandList)
                 {
-                    EmbedBuilder eb = new EmbedBuilder();
-
-                    eb.AddField("Command: ", command.Name);
-
-                    if (command.Summary.Any())
+                    //If user has permissions required to use the command, display the command
+                    PreconditionResult pr = await command.CheckPreconditionsAsync(Context, _serviceProvider);
+                    if (pr.IsSuccess)
                     {
-                        eb.AddField("Summary: ", command.Summary);
-                    }
+                        EmbedBuilder eb = new EmbedBuilder();
 
-                    await ReplyAsync("", false, eb);
+                        eb.AddField("Command: ", command.Name ?? "");
+
+                        if (command.Summary != null)
+                        {
+                            eb.AddField("Summary: ", command.Summary);
+                        }
+
+                        await ReplyAsync("", false, eb);
+                    }
                 }
             }
             else
@@ -50,14 +56,18 @@ namespace foxbot.Modules
                     EmbedBuilder eb = new EmbedBuilder();
 
                     eb.AddField("Command", cmdInfo.Name);
-                    eb.AddField("Summary", cmdInfo.Summary);
 
-                    if (cmdInfo.Preconditions.Any())
+                    if (cmdInfo.Summary != null)
+                    {
+                        eb.AddField("Summary", cmdInfo.Summary);
+                    }
+
+                    if (cmdInfo.Preconditions != null)
                     {
                         eb.AddField("Preconditions", string.Join('\n', cmdInfo.Preconditions));
                     }
 
-                    if (cmdInfo.Parameters.Any())
+                    if (cmdInfo.Parameters!= null)
                     {
                         eb.AddField("Parameters", string.Join('\n', cmdInfo.Parameters.Select(x => $"{x.Name} - {x.Summary}")));
                     }

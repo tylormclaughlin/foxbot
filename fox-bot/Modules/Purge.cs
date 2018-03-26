@@ -12,7 +12,7 @@ namespace foxbot.Modules
     {
         [Command("purge")]
         [Summary("Clears the channel of unpinned messages.")]
-        [RequireUserPermission(Discord.GuildPermission.ManageMessages)]
+        [RequireUserPermission(Discord.ChannelPermission.ManageMessages)]
         [RequireBotPermission(Discord.ChannelPermission.ManageMessages)]
         public async Task PurgeAsync([Summary("Number of messages to delete. Default = 1000")] int numberToDelete = 1000)
         {
@@ -42,8 +42,6 @@ namespace foxbot.Modules
             //        await Context.Channel.SendMessageAsync(ex.Message);
             //    }
             //}
-
-
         }
     }
 }

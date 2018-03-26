@@ -129,6 +129,7 @@ namespace fox_bot
         {
             string mapURL = "https://maps.googleapis.com/maps/api/staticmap?center=" + center +
                             "&size=350x250" +
+                            "&zoom=17" +
                             "&maptype=roadmap" +
                             "&markers=color:red%7Clabel:P%7C" + center +
                             "&key=" + maps_api_key;
