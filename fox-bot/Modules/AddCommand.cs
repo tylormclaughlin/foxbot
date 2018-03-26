@@ -20,7 +20,7 @@ namespace foxbot.Modules
         [RequireUserPermission(Discord.GuildPermission.Administrator, Group = "Allowed")]
         public async Task AddCommandAsync(string cmdName, [Remainder]string cmdContent)
         {
-
+            await ReplyAsync($"Created command !{cmdName} - {cmdContent}");
         }
 
     }
