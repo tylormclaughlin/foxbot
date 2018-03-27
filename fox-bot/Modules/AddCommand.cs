@@ -21,7 +21,8 @@ namespace foxbot.Modules
         [RequireUserPermission(Discord.GuildPermission.Administrator, Group = "Allowed")]
         public async Task AddCommandAsync(string cmdName, [Remainder]string cmdContent)
         {
-            await ReplyAsync($"Created command !{cmdName}");
+            //Add new command info to commandPairs for persistence
+            DataStorage.AddCustomCommand(cmdName, cmdContent);
 
             ModuleInfo module = await _commandService.CreateModuleAsync("", m =>
             {
@@ -30,6 +31,8 @@ namespace foxbot.Modules
                     await ReplyAsync(cmdContent);
                 }, command => { });
             });
+
+            await ReplyAsync($"Created command !{cmdName}");
         }
 
     }
