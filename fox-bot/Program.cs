@@ -1,6 +1,7 @@
 ﻿using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
+using foxbot;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using System;
@@ -28,6 +29,7 @@ namespace fox_bot
             _services = new ServiceCollection()
                 .AddSingleton(_client)
                 .AddSingleton(_commands)
+                .AddSingleton<CommandUtilities>()
                 .BuildServiceProvider();
 
             //Get bot token from file
@@ -60,6 +62,13 @@ namespace fox_bot
         {
             _client.MessageReceived += HandleCommandAsync;
             await _commands.AddModulesAsync(Assembly.GetEntryAssembly());
+
+            DataStorage.LoadCommandsFromFile();
+
+            foreach (CustomCommand cmd in DataStorage.customCommands)
+            {
+                await CommandUtilities.AddCommandAsync(cmd.commandName, cmd.commandContent, _commands);
+            }
         }
 
         private async Task HandleCommandAsync(SocketMessage arg)

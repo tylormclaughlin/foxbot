@@ -8,7 +8,7 @@ namespace foxbot
 {
     class DataStorage
     {
-        private static List<CustomCommand> commandPairs = new List<CustomCommand>();
+        public static List<CustomCommand> customCommands;
         private const string commandFilename = "command_list.json";
 
         static DataStorage()
@@ -18,33 +18,36 @@ namespace foxbot
 
         public static void AddCustomCommand(string cmdName, string cmdContent)
         {
-            commandPairs.Add(new CustomCommand(cmdName, cmdContent));
-            SaveCommandsToFile(commandFilename);
+            customCommands.Add(new CustomCommand(cmdName, cmdContent));
+            SaveCommandsToFile();
         }
 
-        public static bool LoadCommandsFromFile(string filename)
+        public static bool LoadCommandsFromFile()
         {
-            if (!File.Exists(filename))
+            if (!File.Exists(commandFilename))
             {
+                customCommands = new List<CustomCommand>();
+                string json = File.ReadAllText(commandFilename);
+                customCommands = JsonConvert.DeserializeObject<List<CustomCommand>>(json);
                 return false;
             }
             else
             {
-                string json = File.ReadAllText(filename);
-                commandPairs = JsonConvert.DeserializeObject<List<CustomCommand>>(json);
+                string json = File.ReadAllText(commandFilename);
+                customCommands = JsonConvert.DeserializeObject<List<CustomCommand>>(json);
 
                 return true;
             }
         }
 
-        public static bool SaveCommandsToFile(string filename)
+        public static bool SaveCommandsToFile()
         {
-            string json = JsonConvert.SerializeObject(commandPairs, Formatting.Indented);
+            string json = JsonConvert.SerializeObject(customCommands, Formatting.Indented);
             bool success = true;
 
             try
             {
-                File.WriteAllText(filename, json);
+                File.WriteAllText(commandFilename, json);
             }
             catch (Exception e)
             {
