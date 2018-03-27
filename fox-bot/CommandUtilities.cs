@@ -21,6 +21,8 @@ namespace foxbot
                     {
                         await ctx.Channel.SendMessageAsync(cmdContent);
                     }, command => { });
+
+                    m.Name = cmdName;
                 });
             }
             catch (Exception e)
@@ -61,7 +63,39 @@ namespace foxbot
         }
 
         //Modify Command
+        public static async Task<string> ModifyCommandAsync(string cmdName, string cmdContent, CommandService _commandService)
+        {
+            string result = await DeleteCommandAsync(cmdName, _commandService);
+
+            //Should probably come up with a better return value...
+            if (result != $"!{cmdName} was deleted successfully")
+            {
+                return "Sorry, I can't find that command. Check !commands or consult this bot's administrator for more assistance.";
+            }
+            else
+            {
+                return await CreatCommandAsync(cmdName, cmdContent, _commandService);
+            }
+        }
 
         //Delete Command
+        public static async Task<string> DeleteCommandAsync(string cmdName, CommandService _commandService)
+        {
+            ModuleInfo moduleToDelete = _commandService.Modules.FirstOrDefault(x => x.Name == cmdName);
+
+            //return $"Found module with name {moduleToDelete.Name}";
+
+            if (moduleToDelete == null)
+            {
+                return "Sorry, I couldn't find that command. Check !commands or consult this bot's administrator for more assistance.";
+            }
+            else
+            {
+                DataStorage.DeleteCustomCommand(cmdName);
+
+                await _commandService.RemoveModuleAsync(moduleToDelete);
+                return $"!{cmdName} was deleted successfully";
+            }
+        }
     }
 }

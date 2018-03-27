@@ -63,6 +63,7 @@ namespace fox_bot
             _client.MessageReceived += HandleCommandAsync;
             await _commands.AddModulesAsync(Assembly.GetEntryAssembly());
 
+            //Load pre-existing custom commands if possible
             if (DataStorage.LoadCommandsFromFile())
             {
                 foreach (CustomCommand cmd in DataStorage.customCommands)

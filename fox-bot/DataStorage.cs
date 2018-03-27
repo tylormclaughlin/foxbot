@@ -23,6 +23,14 @@ namespace foxbot
             SaveCommandsToFile();
         }
 
+        public static void DeleteCustomCommand(string cmdName)
+        {
+            CustomCommand cmdToDelete = customCommands.FirstOrDefault(x => x.commandName == cmdName);
+            customCommands.Remove(cmdToDelete);
+
+            SaveCommandsToFile();
+        }
+
         public static bool LoadCommandsFromFile()
         {
             if (!File.Exists(commandFilename))
