@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace foxbot
@@ -26,15 +27,23 @@ namespace foxbot
         {
             if (!File.Exists(commandFilename))
             {
-                customCommands = new List<CustomCommand>();
-                string json = File.ReadAllText(commandFilename);
-                customCommands = JsonConvert.DeserializeObject<List<CustomCommand>>(json);
                 return false;
             }
             else
             {
+                //Make sure the file has no duplicate command names before adding to the command list.
                 string json = File.ReadAllText(commandFilename);
-                customCommands = JsonConvert.DeserializeObject<List<CustomCommand>>(json);
+                List<CustomCommand> temp = JsonConvert.DeserializeObject<List<CustomCommand>>(json);
+
+                foreach (CustomCommand cmd in temp)
+                {
+                    if (temp.Where(x => x.commandName == cmd.commandName).Count() > 1)
+                    {
+                        return false;
+                    }
+                }
+
+                customCommands = temp;
 
                 return true;
             }

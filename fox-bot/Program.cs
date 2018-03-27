@@ -63,11 +63,12 @@ namespace fox_bot
             _client.MessageReceived += HandleCommandAsync;
             await _commands.AddModulesAsync(Assembly.GetEntryAssembly());
 
-            DataStorage.LoadCommandsFromFile();
-
-            foreach (CustomCommand cmd in DataStorage.customCommands)
+            if (DataStorage.LoadCommandsFromFile())
             {
-                await CommandUtilities.AddCommandAsync(cmd.commandName, cmd.commandContent, _commands);
+                foreach (CustomCommand cmd in DataStorage.customCommands)
+                {
+                    await CommandUtilities.CreatCommandAsync(cmd.commandName, cmd.commandContent, _commands);
+                }
             }
         }
 
