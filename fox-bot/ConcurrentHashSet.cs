@@ -9,7 +9,7 @@ namespace foxbot
 {
     //Based on https://github.com/dotnet/corefx/blob/d0dc5fc099946adc1035b34a8b1f6042eddb0c75/src/System.Threading.Tasks.Parallel/src/System/Threading/PlatformHelper.cs
     //Copyright (c) .NET Foundation and Contributors
-    internal static class ConcurrentHashSet
+    public static class ConcurrentHashSet
     {
         private const int PROCESSOR_COUNT_REFRESH_INTERVAL_MS = 30000;
         private static volatile int s_processorCount;
@@ -34,7 +34,7 @@ namespace foxbot
     //Based on https://github.com/dotnet/corefx/blob/master/src/System.Collections.Concurrent/src/System/Collections/Concurrent/ConcurrentDictionary.cs
     //Copyright (c) .NET Foundation and Contributors
     [DebuggerDisplay("Count = {Count}")]
-    internal class ConcurrentHashSet<T> : IReadOnlyCollection<T>
+    public class ConcurrentHashSet<T> : IReadOnlyCollection<T>
     {
         private sealed class Tables
         {
