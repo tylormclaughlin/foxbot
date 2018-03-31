@@ -1,5 +1,7 @@
 ﻿using Discord.Commands;
+using Discord.Rest;
 using Discord.WebSocket;
+using foxbot;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -15,7 +17,10 @@ namespace fox_bot.Modules
         [Summary("Crashes the !commands command when it doesn't have a Summary precondition.")]
         public async Task PingAsync()
         {
-            await ReplyAsync("Hello world!");
+            foreach (RestUserMessage rum in MonitorList.GetMonitoredMessages())
+            {
+                await ReplyAsync(rum.Content);
+            }
         }
 
         [Command("user")]

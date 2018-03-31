@@ -1,4 +1,5 @@
 ﻿using Discord;
+using Discord.Rest;
 using Discord.WebSocket;
 using System;
 using System.Collections.Concurrent;
@@ -9,22 +10,32 @@ namespace foxbot
 {
     public class MonitorList
     {
-        private ConcurrentHashSet<SocketUserMessage> monitorList = new ConcurrentHashSet<SocketUserMessage>();
-        private object _sync = new object();
+        private static ConcurrentHashSet<RestUserMessage> messageList = new ConcurrentHashSet<RestUserMessage>();
 
         //Getter
-        public ConcurrentHashSet<SocketUserMessage> GetMonitoredMessages()
+        public static ConcurrentHashSet<RestUserMessage> GetMonitoredMessages()
         {
-            return new ConcurrentHashSet<SocketUserMessage>(monitorList);
+            return new ConcurrentHashSet<RestUserMessage>(messageList);
         }
 
         //Setter
-        public void AddMonitoredMessage(SocketUserMessage msg)
+        public static string AddMonitoredMessage(RestUserMessage msg)
         {
-            
+            string result = "success";
+            try
+            {
+                messageList.TryAdd(msg);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                result = e.Message;
+            }
+
+            return result;
         }
 
-        public void DeleteMonitoredMessage(SocketUserMessage msg)
+        public static void DeleteMonitoredMessage(RestUserMessage msg)
         {
                     
         }

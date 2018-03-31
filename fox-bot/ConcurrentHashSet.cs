@@ -7,6 +7,7 @@ using System.Threading;
 
 namespace foxbot
 {
+    //Taken from https://github.com/RogueException/Discord.Net/blob/431b7fbd9f227f9449be246d1e4ada1959681d34/src/Discord.Net.Core/Utils/ConcurrentHashSet.cs
     //Based on https://github.com/dotnet/corefx/blob/d0dc5fc099946adc1035b34a8b1f6042eddb0c75/src/System.Threading.Tasks.Parallel/src/System/Threading/PlatformHelper.cs
     //Copyright (c) .NET Foundation and Contributors
     public static class ConcurrentHashSet

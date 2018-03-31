@@ -5,6 +5,8 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using Discord.WebSocket;
+using Discord.Rest;
 
 namespace foxbot.Modules
 {
@@ -15,9 +17,9 @@ namespace foxbot.Modules
         {
             var messages = await Context.Channel.GetMessagesAsync(Context.Message.Id, Direction.Before, 1).Flatten();
 
-            IMessage msgToMonitor = messages.FirstOrDefault();
+            RestUserMessage msgToMonitor = (RestUserMessage)messages.FirstOrDefault();
 
-            await ReplyAsync(msgToMonitor.Id.ToString());
+            await ReplyAsync(MonitorList.AddMonitoredMessage(msgToMonitor));
         }
     }
 }

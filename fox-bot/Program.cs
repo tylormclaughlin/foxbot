@@ -1,5 +1,6 @@
 ﻿using Discord;
 using Discord.Commands;
+using Discord.Rest;
 using Discord.WebSocket;
 using foxbot;
 using Microsoft.Extensions.DependencyInjection;
@@ -7,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
@@ -30,6 +32,7 @@ namespace fox_bot
                 .AddSingleton(_client)
                 .AddSingleton(_commands)
                 .AddSingleton<CommandUtilities>()
+                .AddSingleton<MonitorList>()
                 .BuildServiceProvider();
 
             //Get bot token from file
@@ -37,6 +40,8 @@ namespace fox_bot
 
             //Event subscriptions
             _client.Log += Log;
+            _client.ReactionAdded += ReactionAdded;
+            _client.ReactionRemoved += ReactionRemoved;
 
             //Register command modules
             await RegisterCommandsAsync();
@@ -49,6 +54,43 @@ namespace fox_bot
 
             //Keep client from closing
             await Task.Delay(-1);
+        }
+
+        private async Task ReactionRemoved(Cacheable<IUserMessage, ulong> message, ISocketMessageChannel channel, SocketReaction reaction)
+        {
+            RestUserMessage msg = MonitorList.GetMonitoredMessages().FirstOrDefault(x => x.Id == message.Id);
+
+            if (msg != null)
+            {
+                try
+                {
+                    await ReactionUtilities.RemoveRoleFromUserAsync(channel, reaction);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                    
+                }
+            }
+        }
+
+        private async Task ReactionAdded(Cacheable<IUserMessage, ulong> message, ISocketMessageChannel channel, SocketReaction reaction)
+        {
+            RestUserMessage msg = MonitorList.GetMonitoredMessages().FirstOrDefault(x => x.Id == message.Id);
+
+            if (msg != null)
+            {
+
+                try
+                {
+                    await ReactionUtilities.AddRoleToUserAsync(channel, reaction);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                    await channel.SendMessageAsync("Something bad happened. Consult this bot's administrator.");
+                }
+            }
         }
 
         private Task Log(LogMessage arg)
