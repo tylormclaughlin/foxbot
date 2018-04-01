@@ -33,7 +33,7 @@ namespace foxbot.Modules
                 return;
             }
 
-            string emoji = "💯";
+            string emoji = ReactionUtilities.emojitoCheck;
             var msg = await Context.Channel.GetMessageAsync(MonitorList.GetMonitoredMessage().Id) as RestUserMessage;
             var users = await msg.GetReactionUsersAsync(emoji);
 

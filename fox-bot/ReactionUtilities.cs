@@ -37,6 +37,8 @@ namespace foxbot
 
         public static async Task AddRoleToUserAsync(ISocketMessageChannel channel, SocketReaction reaction)
         {
+            if (reaction.Emote.Name != emojitoCheck) return;
+
             SocketGuildUser user = await GetUserAsync(channel, reaction);
 
             if (user != null)
@@ -51,6 +53,8 @@ namespace foxbot
 
         public static async Task RemoveRoleFromUserAsync(ISocketMessageChannel channel, SocketReaction reaction)
         {
+            if (reaction.Emote.Name != emojitoCheck) return;
+
             SocketGuildUser user = await GetUserAsync(channel, reaction);
 
             if (user != null)
