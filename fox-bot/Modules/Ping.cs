@@ -17,10 +17,7 @@ namespace fox_bot.Modules
         [Summary("Crashes the !commands command when it doesn't have a Summary precondition.")]
         public async Task PingAsync()
         {
-            foreach (RestUserMessage rum in MonitorList.GetMonitoredMessages())
-            {
-                await ReplyAsync(rum.Content);
-            }
+            await ReplyAsync("Test command");
         }
 
         [Command("user")]

@@ -58,7 +58,7 @@ namespace fox_bot
 
         private async Task ReactionRemoved(Cacheable<IUserMessage, ulong> message, ISocketMessageChannel channel, SocketReaction reaction)
         {
-            RestUserMessage msg = MonitorList.GetMonitoredMessages().FirstOrDefault(x => x.Id == message.Id);
+            RestUserMessage msg = MonitorList.GetMonitoredMessage();
 
             if (msg != null)
             {
@@ -76,7 +76,7 @@ namespace fox_bot
 
         private async Task ReactionAdded(Cacheable<IUserMessage, ulong> message, ISocketMessageChannel channel, SocketReaction reaction)
         {
-            RestUserMessage msg = MonitorList.GetMonitoredMessages().FirstOrDefault(x => x.Id == message.Id);
+            RestUserMessage msg = MonitorList.GetMonitoredMessage();
 
             if (msg != null)
             {
