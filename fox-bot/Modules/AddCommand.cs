@@ -17,9 +17,10 @@ namespace foxbot.Modules
         }
 
         [Command("addcom")]
+        [Summary("This command allows you to create a new text command.")]
         [RequireOwner(Group = "Allowed")]
         [RequireUserPermission(Discord.GuildPermission.Administrator, Group = "Allowed")]
-        public async Task AddCommandAsync(string cmdName, [Remainder]string cmdContent)
+        public async Task AddCommandAsync([Summary("Name of the command you're creating")] string cmdName, [Summary("What you want the command to say")] [Remainder]string cmdContent)
         {
             string result = await CommandUtilities.AddCommandAsync(cmdName, cmdContent, _commandService);
 

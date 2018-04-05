@@ -16,9 +16,10 @@ namespace foxbot.Modules
         }
 
         [Command("delcom")]
+        [Summary("This command allows you to delete and existing text command.")]
         [RequireOwner(Group = "Allowed")]
         [RequireUserPermission(Discord.GuildPermission.Administrator, Group = "Allowed")]
-        public async Task DeleteCommandAsync(string cmdName)
+        public async Task DeleteCommandAsync([Summary("The name of the command to delete")] string cmdName)
         {
             string result = await CommandUtilities.DeleteCommandAsync(cmdName, _commandService);
 

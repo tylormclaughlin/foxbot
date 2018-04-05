@@ -62,14 +62,19 @@ namespace foxbot.Modules
                         eb.AddField("Summary", cmdInfo.Summary);
                     }
 
-                    if (cmdInfo.Preconditions != null)
+                    if (cmdInfo.Preconditions.Any())
                     {
                         eb.AddField("Preconditions", string.Join('\n', cmdInfo.Preconditions));
                     }
 
-                    if (cmdInfo.Parameters!= null)
+                    if (cmdInfo.Parameters.Any())
                     {
                         eb.AddField("Parameters", string.Join('\n', cmdInfo.Parameters.Select(x => $"{x.Name} - {x.Summary}")));
+                    }
+
+                    if (cmdInfo.Remarks != null)
+                    {
+                        eb.AddField("Remarks", cmdInfo.Remarks);
                     }
 
                     eb.WithColor(Color.DarkGreen);
