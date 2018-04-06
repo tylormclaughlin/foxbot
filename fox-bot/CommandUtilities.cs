@@ -34,7 +34,13 @@ namespace foxbot
             return result;
         }
 
-        //Add Command
+        /// <summary>
+        /// Creates a new command.
+        /// </summary>
+        /// <param name="cmdName">Name of the new command</param>
+        /// <param name="cmdContent">Body of the new command</param>
+        /// <param name="_commandService">The command service the command should be added to</param>
+        /// <returns></returns>
         public static async Task<string> AddCommandAsync(string cmdName, string cmdContent, CommandService _commandService)
         {
             string result = "";
@@ -62,9 +68,16 @@ namespace foxbot
             return result;
         }
 
-        //Modify Command
+        /// <summary>
+        /// Modifies an existing created command.
+        /// </summary>
+        /// <param name="cmdName">The name of the command to modify</param>
+        /// <param name="cmdContent">The new body of the command being modified</param>
+        /// <param name="_commandService">The command service the command belongs to</param>
+        /// <returns></returns>
         public static async Task<string> ModifyCommandAsync(string cmdName, string cmdContent, CommandService _commandService)
         {
+            //Delete the old command and create a new one with the same name
             string result = await DeleteCommandAsync(cmdName, _commandService);
 
             //Should probably come up with a better return value...
@@ -78,12 +91,15 @@ namespace foxbot
             }
         }
 
-        //Delete Command
+        /// <summary>
+        /// Deletes a created command
+        /// </summary>
+        /// <param name="cmdName">The name of the command to delete</param>
+        /// <param name="_commandService">The command service the command should be removed from</param>
+        /// <returns></returns>
         public static async Task<string> DeleteCommandAsync(string cmdName, CommandService _commandService)
         {
             ModuleInfo moduleToDelete = _commandService.Modules.FirstOrDefault(x => x.Name == cmdName);
-
-            //return $"Found module with name {moduleToDelete.Name}";
 
             if (moduleToDelete == null)
             {

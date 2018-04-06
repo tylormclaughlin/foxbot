@@ -37,12 +37,15 @@ namespace foxbot.Modules
                 return;
             }
 
-            string emoji = ReactionUtilities.emojitoCheck;
+            string emoji = ReactionUtilities.emojiToCheck;
             var msg = await Context.Channel.GetMessageAsync(MonitorList.GetMonitoredMessage().Id) as RestUserMessage;
 
+            //If the monitored message got deleted before !unmonitor was used, clear the message and reset.
             if (msg == null)
             {
                 MonitorList.DeleteMonitoredMessage();
+
+                //Grab the member list from the server and unassign the role from anyone who has it.
                 return;
             }
             var users = await msg.GetReactionUsersAsync(emoji);
