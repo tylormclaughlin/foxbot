@@ -16,6 +16,7 @@ namespace foxbot.Modules
         public Commands(CommandService commands, IServiceProvider service)
         {
             _commandService = commands;
+            _serviceProvider = service;
         }
 
         [Command("commands")]

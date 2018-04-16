@@ -1,5 +1,6 @@
 ﻿using Discord;
 using Discord.Commands;
+using Discord.WebSocket;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,11 +13,16 @@ namespace foxbot.Modules
     {
         [Command("purge")]
         [Summary("Clears the channel of unpinned messages.")]
+        [RequireRole("Team Leader+", "Admin", Group = "Allowed")]
+        [RequireUserPermission(GuildPermission.Administrator, Group = "Allowed")]
         [RequireUserPermission(Discord.ChannelPermission.ManageMessages)]
-        [RequireUserPermission(Discord.GuildPermission.Administrator)]
         [RequireBotPermission(Discord.ChannelPermission.ManageMessages)]
         public async Task PurgeAsync([Summary("Number of messages to delete. Default = 1000")] int numberToDelete = 1000)
         {
+            var user = (SocketGuildUser)Context.User;
+
+
+             
             //Dramatically more effective implementation. Add error handling.
             var messages = await Context.Channel.GetMessagesAsync(numberToDelete).Flatten();
             var messagesToDelete = messages.Where(msg => !msg.IsPinned);

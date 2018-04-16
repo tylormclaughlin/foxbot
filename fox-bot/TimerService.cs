@@ -38,7 +38,7 @@ namespace foxbot
                 {
                     foreach(var channel in channels)
                     {
-                        await channel.SendMessageAsync("This timer is working.");
+                        //await channel.SendMessageAsync("This timer is working.");
                     }
                 }
             },
