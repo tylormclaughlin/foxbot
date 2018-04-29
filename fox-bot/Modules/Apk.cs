@@ -61,7 +61,7 @@ namespace foxbot.Modules
 
                     if (!validVersion && versionNumber != "")
                     {
-                        await ReplyAsync("Sorry, I could find that version.");
+                        await ReplyAsync("Sorry, I couldn't find that version.");
                     }
                 }
             }
