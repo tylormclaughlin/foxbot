@@ -142,6 +142,39 @@ namespace fox_bot
                     Console.WriteLine(result.ErrorReason + message.Content);
                 }
             }
+
+            if (message.Channel.Name == "sightings")
+            {
+                if (message.Attachments.Any())
+                {
+                    var attachment = message.Attachments.FirstOrDefault();
+
+                    if (attachment != null)
+                    {
+                        //Check to see if the attachment is probably an image
+                        string[] extensions = new string[] { ".png", "jpg", ".bmp" };
+                        var result = extensions.Any(x => attachment.Filename.EndsWith(x));
+
+                        if ((result == true) && (attachment.Height != null))
+                        {
+                            try
+                            {
+                                EmbedBuilder eb = new EmbedBuilder();
+
+                                eb.WithDescription(message.Content);
+                                eb.WithImageUrl(attachment.Url);
+                                eb.WithColor(Color.DarkGreen);
+
+                                await context.Channel.SendMessageAsync("", false, eb);
+                            }
+                            catch (Exception e)
+                            {
+                                Console.WriteLine(e.Message);
+                            }
+                        }
+                    }
+                }
+            }
             //Create google maps link for locations pasted into the channel
             else if(message.ToString().Contains("Location: "))
             {
