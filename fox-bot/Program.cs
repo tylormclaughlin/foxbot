@@ -152,20 +152,20 @@ namespace fox_bot
                     if (attachment != null)
                     {
                         //Check to see if the attachment is probably an image
-                        string[] extensions = new string[] { ".png", "jpg", ".bmp" };
+                        string[] extensions = { ".png", "jpg", ".bmp" };
                         var result = extensions.Any(x => attachment.Filename.EndsWith(x));
 
                         if ((result == true) && (attachment.Height != null))
                         {
                             try
                             {
-                                EmbedBuilder eb = new EmbedBuilder();
+                                //EmbedBuilder eb = new EmbedBuilder();
 
-                                eb.WithDescription(message.Content);
-                                eb.WithImageUrl(attachment.Url);
-                                eb.WithColor(Color.DarkGreen);
+                                //eb.WithDescription(message.Content);
+                                //eb.WithImageUrl(attachment.Url);
+                                //eb.WithColor(Color.DarkGreen);
 
-                                await context.Channel.SendMessageAsync("", false, eb);
+                                //await context.Channel.SendMessageAsync("", false, eb);
                             }
                             catch (Exception e)
                             {
