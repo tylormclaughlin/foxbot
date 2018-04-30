@@ -1,10 +1,13 @@
 ﻿using Discord.WebSocket;
-using IronOcr;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Text;
+using System.Drawing;
+using Tesseract;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace foxbot
 {
@@ -15,15 +18,15 @@ namespace foxbot
             //stuff
         }
 
-        public void GetFile(string url, string name)
+        public async Task<Bitmap> GetImage(string url)
         {
-            using (var client = new WebClient())
+            using (var client = new HttpClient())
             {
-                client.DownloadFile(url, name);
+                return (Bitmap)Image.FromStream(await client.GetStreamAsync(url));
             }
         }
 
-        public void DeleteFile(string name)
+        public void DeleteImage(string name)
         {
             if (File.Exists(name))
             {
@@ -31,9 +34,15 @@ namespace foxbot
             }
         }
 
-        public string ProcessImage(string url)
-        {
-            var ocr = new AutoOcr();
-        }
+        //public string ProcessImage(string url)
+        //{
+        //    using (var ocr = new TesseractEngine(@"./tessdata", "eng"))
+        //    {
+        //        using (var img = PixConverter.ToPix(GetImage(url)))
+        //        {
+        //            //stuff
+        //        }
+        //    }
+        //}
     }
 }

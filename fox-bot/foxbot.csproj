@@ -7,8 +7,9 @@
 
   <ItemGroup>
     <PackageReference Include="CodeHollow.FeedReader" Version="1.1.1" />
+    <PackageReference Include="CoreCompat.System.Drawing" Version="1.0.0-beta006" />
     <PackageReference Include="Discord.Net" Version="1.0.2" />
-    <PackageReference Include="IronOcr" Version="4.3.0.1" />
+    <PackageReference Include="Tesseract" Version="3.0.2" />
   </ItemGroup>
 
 </Project>
