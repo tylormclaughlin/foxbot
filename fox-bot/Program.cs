@@ -139,44 +139,45 @@ namespace fox_bot
                 //If ExecuteAsync fails, log message to the console.
                 if (!result.IsSuccess)
                 {
+                    await message.Channel.SendMessageAsync(result.ErrorReason);
                     Console.WriteLine(result.ErrorReason + message.Content);
                 }
             }
 
-            if (message.Channel.Name == "sightings")
-            {
-                if (message.Attachments.Any())
-                {
-                    var attachment = message.Attachments.FirstOrDefault();
+            //if (message.Channel.Name == "sightings")
+            //{
+            //    if (message.Attachments.Any())
+            //    {
+            //        var attachment = message.Attachments.FirstOrDefault();
 
-                    if (attachment != null)
-                    {
-                        //Check to see if the attachment is probably an image
-                        string[] extensions = { ".png", "jpg", ".bmp" };
-                        var result = extensions.Any(x => attachment.Filename.EndsWith(x));
+            //        if (attachment != null)
+            //        {
+            //            //Check to see if the attachment is probably an image
+            //            string[] extensions = { ".png", "jpg", ".bmp" };
+            //            var result = extensions.Any(x => attachment.Filename.EndsWith(x));
 
-                        if ((result == true) && (attachment.Height != null))
-                        {
-                            try
-                            {
-                                //EmbedBuilder eb = new EmbedBuilder();
+            //            if ((result == true) && (attachment.Height != null))
+            //            {
+            //                try
+            //                {
+            //                    //EmbedBuilder eb = new EmbedBuilder();
 
-                                //eb.WithDescription(message.Content);
-                                //eb.WithImageUrl(attachment.Url);
-                                //eb.WithColor(Color.DarkGreen);
+            //                    //eb.WithDescription(message.Content);
+            //                    //eb.WithImageUrl(attachment.Url);
+            //                    //eb.WithColor(Color.DarkGreen);
 
-                                //await context.Channel.SendMessageAsync("", false, eb);
-                            }
-                            catch (Exception e)
-                            {
-                                Console.WriteLine(e.Message);
-                            }
-                        }
-                    }
-                }
-            }
+            //                    //await context.Channel.SendMessageAsync("", false, eb);
+            //                }
+            //                catch (Exception e)
+            //                {
+            //                    Console.WriteLine(e.Message);
+            //                }
+            //            }
+            //        }
+            //    }
+            //}
             //Create google maps link for locations pasted into the channel
-            else if(message.ToString().Contains("Location: "))
+            if(message.ToString().Contains("Location: "))
             {
                 
                 //Message format indicates lat/long coordinates should be after this prefix

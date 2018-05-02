@@ -17,7 +17,7 @@ namespace fox_bot.Modules
         [Summary("Crashes the !commands command when it doesn't have a Summary precondition.")]
         public async Task PingAsync()
         {
-            await ReplyAsync("Test command");
+            await ReplyAsync((DateTime.Today - Context.Message.CreatedAt.DateTime).TotalDays.ToString());
         }
 
         [Command("user")]

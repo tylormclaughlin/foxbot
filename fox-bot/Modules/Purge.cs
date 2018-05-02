@@ -20,15 +20,20 @@ namespace foxbot.Modules
         public async Task PurgeAsync([Summary("Number of messages to delete. Default = 1000")] int numberToDelete = 1000)
         {
             var user = (SocketGuildUser)Context.User;
-
-
-             
+            
             //Dramatically more effective implementation. Add error handling.
             var messages = await Context.Channel.GetMessagesAsync(numberToDelete).Flatten();
-            var messagesToDelete = messages.Where(msg => !msg.IsPinned);
+            var messagesToDelete = messages.Where(msg => !msg.IsPinned); //Don't delete pinned messages
+            messagesToDelete = messagesToDelete.Where(msg => (DateTime.Today - msg.CreatedAt.DateTime).TotalDays < 14); //Don't try to delete anything older than 14 days
 
-            await Context.Channel.DeleteMessagesAsync(messagesToDelete);
-
+            if (messagesToDelete.Any())
+            {
+                await Context.Channel.DeleteMessagesAsync(messagesToDelete);
+            }
+            else
+            {
+                await ReplyAsync("I cannot delete pinned messages");
+            }
             //foreach (var msg in messages)
             //{
             //    try
