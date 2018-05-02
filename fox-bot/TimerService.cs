@@ -1,29 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
+using System.Threading; // 1) Add this namespace
+using System.Threading.Tasks;
+using CodeHollow.FeedReader;
+using Discord.Commands;
+using Discord.WebSocket;
 
 namespace foxbot
 {
-    using System;
-    using System.Linq;
-    using System.Threading; // 1) Add this namespace
-    using System.Threading.Tasks;
-    using CodeHollow.FeedReader;
-    using Discord.Commands;
-    using Discord.WebSocket;
-
+    //Borrowed from here https://gist.github.com/Joe4evr/967949a477ed0c6c841407f0f25fa730
     public class TimerService
     {
-        private readonly Timer _timer; // 2) Add a field like this
-                                       // This example only concerns a single timer.
-                                       // If you would like to have multiple independant timers,
-                                       // you could use a collection such as List<Timer>,
-                                       // or even a Dictionary<string, Timer> to quickly get
-                                       // a specific Timer instance by name.
+        private readonly Timer _timer; 
 
         private string currentVersion;
 
-        public TimerService(DiscordSocketClient client)
+        public TimerService(DiscordSocketClient client, CommandService _commandService)
         {
             Feed feed = FeedReader.ReadAsync("https://www.apkmirror.com/apk/niantic-inc/pokemon-go/feed/").Result;
 
@@ -39,6 +33,9 @@ namespace foxbot
                     foreach(var channel in channels)
                     {
                         //await channel.SendMessageAsync("This timer is working.");
+
+                        //Put RSS Feed reader code in separate method, create feed reader service, use feed reader method here.
+                        
                     }
                 }
             },

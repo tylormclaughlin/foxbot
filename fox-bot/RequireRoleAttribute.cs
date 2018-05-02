@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace foxbot
 {
+    //Borrowed from here https://gist.github.com/AntiTcb/badc53d084a20a445cb27c00f4a74355
     public class RequireRoleAttribute : RequireContextAttribute
     {
         private ulong[] _roleIds;
