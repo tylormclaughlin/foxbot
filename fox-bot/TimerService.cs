@@ -16,32 +16,47 @@ namespace foxbot
     {
         private readonly PurgeService _purgeService;
         private readonly ConcurrentDictionary<string, Timer> _timerList = new ConcurrentDictionary<string, Timer>();
+        private FeedItem currentVersion = null;
 
         public TimerService(DiscordSocketClient client, PurgeService purgeService)
         {
-            //Feed feed = FeedReader.ReadAsync("https://www.apkmirror.com/apk/niantic-inc/pokemon-go/feed/").Result;
+            
 
             _purgeService = purgeService;
 
             _timerList.TryAdd("apk", new Timer(async _ =>
             {
                 // 3) Any code you want to periodically run goes here, for example:
-                var channels = client.Guilds.SelectMany(x => x.TextChannels).Where(x => x.Name == "timer-test");
+                Feed feed = FeedReader.ReadAsync("https://www.apkmirror.com/apk/niantic-inc/pokemon-go/feed/").Result;
+                FeedItem newVersion = feed.Items.FirstOrDefault();
 
-                if (channels.Any())
+                if (currentVersion == null)
                 {
-                    foreach (var channel in channels)
-                    {
-                        await channel.SendMessageAsync("This timer is working.");
-
-                        //Put RSS Feed reader code in separate method, create feed reader service, use feed reader method here.
-
-                    }
+                    currentVersion = newVersion;
                 }
+                else
+                {
+                    if (currentVersion != newVersion)
+                    {
+                        currentVersion = newVersion;
+                        var channels = client.Guilds.SelectMany(x => x.TextChannels).Where(x => x.Name == "timer-test");
+
+                        if (channels.Any())
+                        {
+                            foreach (var channel in channels)
+                            {
+                                //await channel.SendMessageAsync("This timer is working.");
+
+                                //Put RSS Feed reader code in separate method, create feed reader service, use feed reader method here.
+                                await channel.SendMessageAsync(currentVersion.Title + " - " + currentVersion.Link.Replace("-release/", "-android-apk-download/download/"));
+                            }
+                        }
+                    }
+                }                
             },
             null,
-            TimeSpan.FromMinutes(30),  // 4) Time that message should fire after the timer is created
-            TimeSpan.FromMinutes(60)));
+            TimeSpan.FromMinutes(5),  // 4) Time that message should fire after the timer is created
+            TimeSpan.FromMinutes(5)));
 
             //Do some math to figure out when midnight is so we know when to fire the timer for the first time.
             DateTime now = DateTime.Now;
@@ -64,12 +79,19 @@ namespace foxbot
             TimeSpan.FromHours(24)));
         }
 
-        public void Stop() // 6) Example to make the timer stop running
+        public void Stop(string key) // 6) Example to make the timer stop running
         {
             //_timer.Change(Timeout.Infinite, Timeout.Infinite);
+
+            Timer timer;
+
+            if (_timerList.TryGetValue(key, out timer))
+            {
+                timer.Change(Timeout.Infinite, Timeout.Infinite);
+            }
         }
 
-        public void Restart() // 7) Example to restart the timer
+        public void Restart(string key) // 7) Example to restart the timer
         {
             //_timer.Change(TimeSpan.FromMinutes(10), TimeSpan.FromMinutes(30));
         }
