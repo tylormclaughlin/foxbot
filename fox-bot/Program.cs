@@ -34,9 +34,11 @@ namespace fox_bot
                 .AddSingleton<CommandUtilities>()
                 .AddSingleton<MonitorList>()
                 .AddSingleton<TimerService>()
+                .AddSingleton<PurgeService>()
                 .BuildServiceProvider();
 
             _services.GetRequiredService<TimerService>();
+            _services.GetRequiredService<PurgeService>();
 
             //Get bot token from file
             string botToken = File.ReadAllText("bot_token.txt");
