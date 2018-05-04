@@ -34,9 +34,11 @@ namespace fox_bot
                 .AddSingleton<CommandUtilities>()
                 .AddSingleton<MonitorList>()
                 .AddSingleton<TimerService>()
+                .AddSingleton<PurgeService>()
                 .BuildServiceProvider();
 
             _services.GetRequiredService<TimerService>();
+            _services.GetRequiredService<PurgeService>();
 
             //Get bot token from file
             string botToken = File.ReadAllText("bot_token.txt");
@@ -139,7 +141,7 @@ namespace fox_bot
                 //If ExecuteAsync fails, log message to the console.
                 if (!result.IsSuccess)
                 {
-                    await message.Channel.SendMessageAsync(result.ErrorReason);
+                    //await message.Channel.SendMessageAsync(result.ErrorReason);
                     Console.WriteLine(result.ErrorReason + message.Content);
                 }
             }

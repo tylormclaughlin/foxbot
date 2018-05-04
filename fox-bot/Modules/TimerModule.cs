@@ -17,17 +17,17 @@ namespace foxbot.Modules
 
         // Example commands
         [Command("stoptimer")]
-        public async Task StopCmd()
+        public async Task StopCmd(string name)
         {
-            _service.Stop();
-            await ReplyAsync("Timer stopped.");
+            _service.Stop(name);
+            await ReplyAsync($"{name} timer stopped.");
         }
 
         [Command("starttimer")]
-        public async Task RestartCmd()
+        public async Task RestartCmd(string name)
         {
-            _service.Restart();
-            await ReplyAsync("Timer (re)started.");
+            _service.Restart(name);
+            await ReplyAsync($"{name} timer restarted.");
         }
     }
 }
