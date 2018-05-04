@@ -36,10 +36,10 @@ namespace foxbot
                 }
                 else
                 {
-                    if (currentVersion != newVersion)
+                    if (currentVersion.Title != newVersion.Title)
                     {
                         currentVersion = newVersion;
-                        var channels = client.Guilds.SelectMany(x => x.TextChannels).Where(x => x.Name == "timer-test");
+                        var channels = client.Guilds.SelectMany(x => x.TextChannels).Where(x => x.Name == "team-chat");
 
                         if (channels.Any())
                         {
@@ -66,12 +66,11 @@ namespace foxbot
 
             _timerList.TryAdd("sightings", new Timer(async _ =>
             {
-                var channels = client.Guilds.SelectMany(x => x.TextChannels).Where(x => x.Name == "timer-test");
+                var channels = client.Guilds.SelectMany(x => x.TextChannels).Where(x => x.Name == "sightings");
 
                 foreach (var channel in channels)
                 {
                     await _purgeService.PurgeChannel(channel.Id);
-                    await channel.SendMessageAsync(DateTime.Now.ToString());
                 }
             },
             null,

@@ -141,7 +141,7 @@ namespace fox_bot
                 //If ExecuteAsync fails, log message to the console.
                 if (!result.IsSuccess)
                 {
-                    await message.Channel.SendMessageAsync(result.ErrorReason);
+                    //await message.Channel.SendMessageAsync(result.ErrorReason);
                     Console.WriteLine(result.ErrorReason + message.Content);
                 }
             }
