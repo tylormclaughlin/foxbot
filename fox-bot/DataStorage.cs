@@ -11,6 +11,7 @@ namespace foxbot
     {
         public static List<CustomCommand> customCommands;
         private const string commandFilename = "command_list.json";
+        private const string nicknamesFilename = "instinct_nicknames.txt";
 
         static DataStorage()
         {
@@ -75,6 +76,30 @@ namespace foxbot
             }
 
             return success;
+        }
+
+        public static bool SaveUsernamesToFile(List<string> usernames)
+        {
+            bool result = true;
+
+            if(File.Exists(nicknamesFilename))
+            {
+                File.Delete(nicknamesFilename);
+            }
+
+            try
+            {
+                foreach (string user in usernames)
+                {
+                    File.AppendAllText(nicknamesFilename, (user + Environment.NewLine));
+                }
+            }
+            catch (Exception e)
+            {
+                result = false;
+            }
+
+            return result;
         }
     }
 }
