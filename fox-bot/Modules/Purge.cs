@@ -26,7 +26,7 @@ namespace foxbot.Modules
         [RequireBotPermission(Discord.ChannelPermission.ManageMessages)]
         public async Task PurgeAsync([Summary("Number of messages to delete. Default = 1000")] int numberToDelete = 1000)
         {
-            await _purgeService.PurgeChannel(Context.Message.Channel.Id);
+            await _purgeService.PurgeChannel(Context.Message.Channel.Id, numberToDelete);
         }
     }
 }
