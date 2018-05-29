@@ -27,32 +27,41 @@ namespace foxbot
             _timerList.TryAdd("apk", new Timer(async _ =>
             {
                 // 3) Any code you want to periodically run goes here, for example:
-                Feed feed = FeedReader.ReadAsync("https://www.apkmirror.com/apk/niantic-inc/pokemon-go/feed/").Result;
-                FeedItem newVersion = feed.Items.FirstOrDefault();
 
-                if (currentVersion == null)
+                try
                 {
-                    currentVersion = newVersion;
-                }
-                else
-                {
-                    if (currentVersion.Title != newVersion.Title)
+                    Feed feed = FeedReader.ReadAsync("https://www.apkmirror.com/apk/niantic-inc/pokemon-go/feed/").Result;
+                    FeedItem newVersion = feed.Items.FirstOrDefault();
+
+                    if (currentVersion == null)
                     {
                         currentVersion = newVersion;
-                        var channels = client.Guilds.SelectMany(x => x.TextChannels).Where(x => x.Name == "team-chat");
-
-                        if (channels.Any())
+                    }
+                    else
+                    {
+                        if (currentVersion.Title != newVersion.Title)
                         {
-                            foreach (var channel in channels)
-                            {
-                                //await channel.SendMessageAsync("This timer is working.");
+                            currentVersion = newVersion;
+                            var channels = client.Guilds.SelectMany(x => x.TextChannels).Where(x => x.Name == "team-chat");
 
-                                //Put RSS Feed reader code in separate method, create feed reader service, use feed reader method here.
-                                await channel.SendMessageAsync(currentVersion.Title + " - " + currentVersion.Link.Replace("-release/", "-android-apk-download/download/"));
+                            if (channels.Any())
+                            {
+                                foreach (var channel in channels)
+                                {
+                                    //Get the role to ping interested users
+                                    var role = channel.Guild.Roles.FirstOrDefault(x => x.Name == "apk");
+
+                                    //Put RSS Feed reader code in separate method, create feed reader service, use feed reader method here.
+                                    await channel.SendMessageAsync(role.Mention + " " + currentVersion.Title + " - " + currentVersion.Link.Replace("-release/", "-android-apk-download/download/"));
+                                }
                             }
                         }
                     }
-                }                
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
             },
             null,
             TimeSpan.FromMinutes(5),  // 4) Time that message should fire after the timer is created
