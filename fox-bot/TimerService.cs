@@ -75,7 +75,7 @@ namespace foxbot
 
             _timerList.TryAdd("sightings", new Timer(async _ =>
             {
-                var channels = client.Guilds.SelectMany(x => x.TextChannels).Where(x => x.Name == "sightings");
+                var channels = client.Guilds.SelectMany(x => x.TextChannels).Where(x => x.Id == 439637169963925515 || x.Name == "sightings"); //439637169963925515 is the #sightings channel ID
 
                 foreach (var channel in channels)
                 {
