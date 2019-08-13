@@ -87,7 +87,8 @@ namespace foxbot
             }
             else
             {
-                return await CreatCommandAsync(cmdName, cmdContent, _commandService);
+                //Call AddCommand here instead
+                return await AddCommandAsync(cmdName, cmdContent, _commandService);
             }
         }
 
